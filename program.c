@@ -6,9 +6,10 @@
 void moveTo(int, int);
 void safeGets(char[], int);
 int parseInt(char[],int);
+void throwDice(int);
 void printlines(int[]);
 //fgets is broken, crashes program if too many(n-1) chars are passed, endl(\n) included, I'll be using scanf and getchar
-//scanf is even more broken just straight up crashing the program no matter what
+//scanf is even more broken just straight up crashing the program no matter what. so fgets it is
 //memory leak????
 
 union extFloat{
@@ -18,24 +19,15 @@ union extFloat{
 
 int main(){
 	system("exit");
-	int throws[11];
-	for(int i = 0; i < 11 ; i++){
-		throws[i] = 0;
+	printf("\nhow many throws[2-5]?: ");
+	char howmany[10];
+	fgets(howmany, 10, stdin);
+	printf("\necho: %d", (int)howmany[0]-48);
+	int amount = (int)howmany[0]-48;
+	if(amount<2){
+		amount = 2;
 	}
-	int index;
-	for(int i = 0; i < MAX_ITERATION; i++){
-		index = (rand()%6)+1;
-		index += (rand()%6)+1;
-		moveTo(throws[index-2]+1,index-1);
-		printf("*");
-		throws[index-2]++;
-		moveTo(1,14);
-		//printf("%d   \n",index);
-		for(int j = 0; j < 11 ; j++){
-			printf("%d\n",throws[j]);
-		}
-		//Sleep(1);
-	}
+	throwDice(amount);
 	printf("\nend of execution, press any button to exit");
     getchar();
 	return 0;
@@ -45,8 +37,25 @@ void moveTo(int x, int y){
 	printf("\033[%d;%dH",y,x);
 }
 
-/*
-void safeGets(char[] destination, int size){
-	
-};*/
-
+void throwDice(int n){
+	int possibilities = (n*6)-n+1;
+	int throws[possibilities];
+	int index = 0;
+	for(int i = 0; i < possibilities ; i++){
+		throws[i] = 0;
+	}
+	for(int i = 0; i < MAX_ITERATION; i++){
+		index = 0;
+		for(int j = 0; j < n; j++){
+			index += (rand()%6)+1;
+		}
+		moveTo(throws[index-n]+1,index-n+1);
+		printf("*");
+		throws[index-n]++;
+		moveTo(1,possibilities+2);
+		//printf("%d   \n",index);
+		for(int j = 0; j < possibilities; j++){
+			printf("%d: %d\n",j+n, throws[j]);
+		}
+	}
+}
