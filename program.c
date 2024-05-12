@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <windows.h>
 #define MAX_ITERATION 1000
-#define LINE_WIDTH 30;
 
 void moveTo(int, int);
 void safeGets(char[], int);
